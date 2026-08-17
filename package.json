@@ -1,0 +1,27 @@
+{
+  "name": "todo-list-odin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack serve",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Biancaxs/todo-list-odin.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Biancaxs/todo-list-odin/issues"
+  },
+  "homepage": "https://github.com/Biancaxs/todo-list-odin#readme",
+  "devDependencies": {
+    "webpack": "^5.109.2",
+    "webpack-cli": "^7.2.2"
+  }
+}
