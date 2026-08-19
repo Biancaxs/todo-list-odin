@@ -1,4 +1,5 @@
 import { project } from './project.js'
+import { todo } from "./todo.js"
 
 let projects = []
 
@@ -18,4 +19,10 @@ export function newProjects(name){
 
 export function selectProject(index){
     currentProject = projects[index]
+}
+
+export function addTask(title, description, date, priority, project, notes){
+    const newTodo = todo(title, description, date, priority, notes)
+    const targetProject = projects.find(p => p.name === project)
+    targetProject.addTodo(newTodo)
 }
