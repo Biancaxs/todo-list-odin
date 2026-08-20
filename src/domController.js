@@ -1,4 +1,5 @@
 import './appLogic.js'
+import { getProjects, newProjects, addTask } from './appLogic.js'
 
 const openTaskDialog = document.getElementById("openTaskDialog")
 const openProjectDialog = document.getElementById("openProjectDialog")
@@ -39,4 +40,17 @@ createTaskBtn.addEventListener("click", () => {
 createProjectBtn.addEventListener("click", () => {
     const newProjectName = projectName.value
     newProjects(newProjectName)
+    renderProjects()
 })
+
+export function renderProjects(){
+    const projectList = document.getElementById("projects")
+    projectList.innerHTML = ""
+    getProjects().forEach((project) => {
+        const newProjectLi = document.createElement("li")
+        newProjectLi.className = "projects-li"
+        newProjectLi.textContent = project.name
+
+        projectList.appendChild(newProjectLi)
+    })
+}

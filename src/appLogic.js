@@ -26,3 +26,7 @@ export function addTask(title, description, date, priority, project, notes){
     const targetProject = projects.find(p => p.name === project)
     targetProject.addTodo(newTodo)
 }
+
+export function getProjects(){
+    return projects
+}
