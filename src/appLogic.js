@@ -30,3 +30,7 @@ export function addTask(title, description, date, priority, project, notes){
 export function getProjects(){
     return projects
 }
+
+export function getCurrentTodos(){
+    return currentProject.todos
+}
