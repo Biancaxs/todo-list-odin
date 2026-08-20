@@ -9,7 +9,7 @@
     
     <aside>
 
-        <ul></ul>
+        <ul id="projects"></ul>
         <button id="openProjectDialog">New project</button>
         <dialog id="projectDialog">
             <form method="dialog">
@@ -29,7 +29,7 @@
     <main>
 
         <h2></h2>
-        <ul></ul>
+        <ul id="todo"></ul>
 
         <button id="openTaskDialog">Add task</button>
         <dialog id="taskDialog">
@@ -52,7 +52,9 @@
                 </select>
 
                 <label for="taskProject">Project</label>
-                <select name="taskProject" id="taskProject"></select>
+                <select name="taskProject" id="taskProject">
+                    <option value="Standard">Standard</option>
+                </select>
 
                 <input type="text" id="taskNotes" name="taskNotes" placeholder="Notes (optional)">
 
