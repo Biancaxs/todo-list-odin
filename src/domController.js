@@ -1,5 +1,5 @@
 import './appLogic.js'
-import { getProjects, newProjects, addTask } from './appLogic.js'
+import { getProjects, newProjects, addTask, getCurrentTodos } from './appLogic.js'
 
 const openTaskDialog = document.getElementById("openTaskDialog")
 const openProjectDialog = document.getElementById("openProjectDialog")
@@ -35,12 +35,15 @@ createTaskBtn.addEventListener("click", () => {
     const newTaskProject = taskProject.value
     const newTaskNotes = taskNotes.value
     addTask(newTaskTitle, newTaskDescription, newTaskDueDate, newTaskPriority, newTaskProject, newTaskNotes)
+    renderTodos()
+    renderProjectOptions()
 })
 
 createProjectBtn.addEventListener("click", () => {
     const newProjectName = projectName.value
     newProjects(newProjectName)
     renderProjects()
+    renderProjectOptions()
 })
 
 export function renderProjects(){
@@ -52,5 +55,30 @@ export function renderProjects(){
         newProjectLi.textContent = project.name
 
         projectList.appendChild(newProjectLi)
+    })
+}
+
+export function renderTodos(){
+    const todoList = document.getElementById("todo")
+    todoList.innerHTML = ""
+    getCurrentTodos().forEach((todo) => {
+        const newTodo = document.createElement("li")
+        newTodo.className = "todo-li"
+        newTodo.textContent = todo.title
+
+        todoList.appendChild(newTodo)
+    })
+}
+
+export function renderProjectOptions(){
+    const projectOptions = document.getElementById("taskProject")
+    projectOptions.innerHTML = ""
+    getProjects().forEach((project) => {
+        const newProjectOption = document.createElement("option")
+        newProjectOption.className = "projects-option"
+        newProjectOption.textContent = project.name
+        newProjectOption.value = project.name
+
+        projectOptions.appendChild(newProjectOption)
     })
 }
