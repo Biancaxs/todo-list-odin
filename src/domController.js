@@ -4,6 +4,9 @@ import { getProjects, newProjects, addTask, getCurrentTodos } from './appLogic.j
 const openTaskDialog = document.getElementById("openTaskDialog")
 const openProjectDialog = document.getElementById("openProjectDialog")
 
+const cancelTaskBtn = document.getElementById("cancelTaskBtn") 
+const cancelProjectBtn = document.getElementById("cancelProjectBtn")
+
 const taskDialog = document.getElementById("taskDialog")
 const projectDialog = document.getElementById("projectDialog")
 
@@ -21,10 +24,19 @@ const projectName = document.getElementById("projectName")
 
 openTaskDialog.addEventListener("click", () => {
     taskDialog.showModal()
+    renderProjectOptions()
 })
 
 openProjectDialog.addEventListener("click", () => {
     projectDialog.showModal()
+})
+
+cancelTaskBtn.addEventListener("click", () => {
+    taskDialog.close()
+})
+
+cancelProjectBtn.addEventListener("click", () => {
+    projectDialog.close()
 })
 
 createTaskBtn.addEventListener("click", () => {
@@ -82,3 +94,4 @@ export function renderProjectOptions(){
         projectOptions.appendChild(newProjectOption)
     })
 }
+
