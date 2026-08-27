@@ -25,7 +25,6 @@ export function initializeApp(){
 export function newProjects(name){
     let newProject = project(name)
     projects.push(newProject)
-    currentProject = newProject
     saveData(projects)
 }
 
@@ -37,6 +36,7 @@ export function addTask(title, description, date, priority, project, notes){
     const newTodo = todo(title, description, date, priority, notes)
     const targetProject = projects.find(p => p.name === project)
     targetProject.addTodo(newTodo)
+    currentProject = targetProject
     saveData(projects)
 }
 
@@ -46,4 +46,21 @@ export function getProjects(){
 
 export function getCurrentTodos(){
     return currentProject.todos
+}
+
+export function deleteTask(taskIndex){
+    currentProject.todos.splice(taskIndex, 1)
+    saveData(projects)
+}
+
+export function deleteProject(projectIndex){
+    projects.splice(projectIndex, 1)
+
+    if (projects.length > 0){
+        currentProject = projects[0]
+    } else{
+        currentProject = null
+    }
+
+    saveData(projects)
 }
