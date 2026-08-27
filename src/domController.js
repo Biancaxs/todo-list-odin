@@ -25,6 +25,7 @@ const projectName = document.getElementById("projectName")
 openTaskDialog.addEventListener("click", () => {
     taskDialog.showModal()
     renderProjectOptions()
+    setDefaultDate()
 })
 
 openProjectDialog.addEventListener("click", () => {
@@ -56,6 +57,8 @@ createTaskBtn.addEventListener("click", () => {
 createProjectBtn.addEventListener("click", () => {
     const newProjectName = projectName.value
     newProjects(newProjectName)
+    projectName.value = ""
+    projectDialog.close()
     renderProjects()
     renderProjectOptions()
     renderTodos()
@@ -69,21 +72,23 @@ export function renderProjects(){
         newProjectLi.className = "projects-li"
         newProjectLi.textContent = project.name
 
-        const deleteProjectBtn = document.createElement("button")
-        deleteProjectBtn.className = "delete-project-btn"
-        deleteProjectBtn.textContent = "Delete"
-        deleteProjectBtn.dataset.index = index
+        if (project.name !== "Standard"){
+            const deleteProjectBtn = document.createElement("button")
+            deleteProjectBtn.className = "delete-project-btn"
+            deleteProjectBtn.textContent = "Delete"
+            deleteProjectBtn.dataset.index = index
 
-        deleteProjectBtn.addEventListener("click", (e) => {
-            const projectIndex = e.target.dataset.index
-            
-            deleteProject(projectIndex)
-            renderTodos()
-            renderProjects()
-            renderProjectOptions()
-        })
+            deleteProjectBtn.addEventListener("click", (e) => {
+                const projectIndex = e.target.dataset.index
+                
+                deleteProject(projectIndex)
+                renderTodos()
+                renderProjects()
+                renderProjectOptions()
+            })
+            newProjectLi.appendChild(deleteProjectBtn)
+        }
 
-        newProjectLi.appendChild(deleteProjectBtn)
         projectList.appendChild(newProjectLi)
     })
 }
@@ -91,7 +96,7 @@ export function renderProjects(){
 export function renderTodos(){
     const todoList = document.getElementById("todo")
     todoList.innerHTML = ""
-    getCurrentTodos().forEach((todo) => {
+    getCurrentTodos().forEach((todo, index) => {
         const newTodo = document.createElement("li")
         newTodo.className = "todo-li"
         newTodo.textContent = todo.title
@@ -124,4 +129,13 @@ export function renderProjectOptions(){
 
         projectOptions.appendChild(newProjectOption)
     })
+}
+
+export function setDefaultDate(){
+    const today = new Date()
+    const year = today.getFullYear()
+    const month = String(today.getMonth() + 1).padStart(2, "0")
+    const day = String(today.getDate()).padStart(2, "0")
+
+    taskDueDate.value = `${year}-${month}-${day}`
 }
