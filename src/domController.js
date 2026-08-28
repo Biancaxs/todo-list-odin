@@ -1,5 +1,5 @@
 import './appLogic.js'
-import { getProjects, newProjects, addTask, getCurrentTodos, deleteTask, deleteProject, toggleTaskStatus } from './appLogic.js'
+import { getProjects, newProjects, addTask, getCurrentTodos, deleteTask, deleteProject, toggleTaskStatus, editTask, getCurrentProjectName } from './appLogic.js'
 
 const openTaskDialog = document.getElementById("openTaskDialog")
 const openProjectDialog = document.getElementById("openProjectDialog")
@@ -22,7 +22,16 @@ const taskNotes = document.getElementById("taskNotes")
 
 const projectName = document.getElementById("projectName")
 
+let currentlyEditingIndex = null
+
 openTaskDialog.addEventListener("click", () => {
+    currentlyEditingIndex = null
+
+    taskTitle.value = ""
+    taskDescription.value = ""
+    taskNotes.value = ""
+    taskPriority.value = "low"
+
     taskDialog.showModal()
     renderProjectOptions()
     setDefaultDate()
@@ -47,11 +56,16 @@ createTaskBtn.addEventListener("click", () => {
     const newTaskPriority = taskPriority.value
     const newTaskProject = taskProject.value
     const newTaskNotes = taskNotes.value
-    addTask(newTaskTitle, newTaskDescription, newTaskDueDate, newTaskPriority, newTaskProject, newTaskNotes)
+
+    if (currentlyEditingIndex === null) {
+        addTask(newTaskTitle, newTaskDescription, newTaskDueDate, newTaskPriority, newTaskProject, newTaskNotes)
+    } else {
+        editTask(currentlyEditingIndex, newTaskTitle, newTaskDescription, newTaskDueDate, newTaskPriority, newTaskNotes)
+        currentlyEditingIndex = null
+    }
+
     taskDialog.close()
     renderTodos()
-    taskTitle.value = ""
-    taskDescription.value = ""
 })
 
 createProjectBtn.addEventListener("click", () => {
@@ -108,6 +122,13 @@ export function renderTodos(){
         deleteTaskBtn.textContent = "Delete"
         deleteTaskBtn.dataset.index = index
 
+        deleteTaskBtn.addEventListener("click", (e) => {
+            const taskIndex = e.target.dataset.index
+            
+            deleteTask(taskIndex)
+            renderTodos()
+        })
+
         const toggleBtn = document.createElement("input")
         toggleBtn.type = "checkbox"
         toggleBtn.classList = "todo-checkbox"
@@ -123,14 +144,26 @@ export function renderTodos(){
             renderTodos()
         })
 
-        deleteTaskBtn.addEventListener("click", (e) => {
-            const taskIndex = e.target.dataset.index
+        const editTaskBtn = document.createElement("button")
+        editTaskBtn.className = "edit-task-btn"
+        editTaskBtn.textContent = "Edit"
+
+        editTaskBtn.addEventListener("click", () => {
+            currentlyEditingIndex = index
             
-            deleteTask(taskIndex)
+            taskTitle.value = todo.title
+            taskDescription.value = todo.description
+            taskDueDate.value = todo.dueDate
+            taskPriority.value = todo.priority
+            taskProject.value = getCurrentProjectName()
+            taskNotes.value = todo.notes
+
+            taskDialog.showModal()
             renderTodos()
         })
 
         newTodo.appendChild(toggleBtn)
+        newTodo.appendChild(editTaskBtn)
         newTodo.appendChild(deleteTaskBtn)
         todoList.appendChild(newTodo)
     })

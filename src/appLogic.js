@@ -66,7 +66,21 @@ export function deleteProject(projectIndex){
 }
 
 export function toggleTaskStatus(taskIndex){
-    const task = currentProject.todos[taskIndex]
-    task.isComplete = !task.isComplete
+    const toggleTask = currentProject.todos[taskIndex]
+    toggleTask.isComplete = !toggleTask.isComplete
     saveData(projects)
+}
+
+export function editTask(taskIndex, newTitle, newDescription, newDate, newPriority, newNotes){
+    const editTodo = currentProject.todos[taskIndex]
+    editTodo.title = newTitle
+    editTodo.description = newDescription
+    editTodo.date = newDate
+    editTodo.priority = newPriority
+    editTodo.notes = newNotes
+    saveData(projects)
+}
+
+export function getCurrentProjectName() {
+    return currentProject.name;
 }
