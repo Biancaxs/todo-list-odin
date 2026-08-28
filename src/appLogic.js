@@ -64,3 +64,9 @@ export function deleteProject(projectIndex){
 
     saveData(projects)
 }
+
+export function toggleTaskStatus(taskIndex){
+    const task = currentProject.todos[taskIndex]
+    task.isComplete = !task.isComplete
+    saveData(projects)
+}

@@ -1,5 +1,5 @@
 import './appLogic.js'
-import { getProjects, newProjects, addTask, getCurrentTodos, deleteTask, deleteProject } from './appLogic.js'
+import { getProjects, newProjects, addTask, getCurrentTodos, deleteTask, deleteProject, toggleTaskStatus } from './appLogic.js'
 
 const openTaskDialog = document.getElementById("openTaskDialog")
 const openProjectDialog = document.getElementById("openProjectDialog")
@@ -99,12 +99,29 @@ export function renderTodos(){
     getCurrentTodos().forEach((todo, index) => {
         const newTodo = document.createElement("li")
         newTodo.className = "todo-li"
-        newTodo.textContent = todo.title
+        const taskText = document.createElement("span")
+        taskText.textContent = todo.title
+        newTodo.appendChild(taskText)
 
         const deleteTaskBtn = document.createElement("button")
         deleteTaskBtn.className = "delete-task-btn"
         deleteTaskBtn.textContent = "Delete"
         deleteTaskBtn.dataset.index = index
+
+        const toggleBtn = document.createElement("input")
+        toggleBtn.type = "checkbox"
+        toggleBtn.classList = "todo-checkbox"
+
+        toggleBtn.checked = todo.isComplete
+
+        if (todo.isComplete) {
+            newTodo.classList.add("completed")
+        }
+
+        toggleBtn.addEventListener("change", () => {
+            toggleTaskStatus(index)
+            renderTodos()
+        })
 
         deleteTaskBtn.addEventListener("click", (e) => {
             const taskIndex = e.target.dataset.index
@@ -113,6 +130,7 @@ export function renderTodos(){
             renderTodos()
         })
 
+        newTodo.appendChild(toggleBtn)
         newTodo.appendChild(deleteTaskBtn)
         todoList.appendChild(newTodo)
     })
