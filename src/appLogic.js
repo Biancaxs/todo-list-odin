@@ -4,7 +4,7 @@ import { saveData, loadData } from './storage.js'
 
 let projects = loadData() || []
 
-let currentProject
+let currentProjectIndex = 0
 
 export function initializeApp(){
     if(projects.length === 0){
@@ -18,25 +18,25 @@ export function initializeApp(){
             return realProject
         })
 
-        currentProject = projects[0]
+        currentProjectIndex = 0
     }
 }
 
 export function newProjects(name){
     let newProject = project(name)
     projects.push(newProject)
+    currentProjectIndex = projects.length - 1
     saveData(projects)
 }
 
 export function selectProject(index){
-    currentProject = projects[index]
+    currentProjectIndex = index
 }
 
 export function addTask(title, description, date, priority, project, notes){
     const newTodo = todo(title, description, date, priority, notes)
     const targetProject = projects.find(p => p.name === project)
     targetProject.addTodo(newTodo)
-    currentProject = targetProject
     saveData(projects)
 }
 
@@ -45,34 +45,32 @@ export function getProjects(){
 }
 
 export function getCurrentTodos(){
-    return currentProject.todos
+    if (!projects[currentProjectIndex]) {
+        currentProjectIndex = 0
+    }
+    return projects[currentProjectIndex].todos 
 }
 
 export function deleteTask(taskIndex){
-    currentProject.todos.splice(taskIndex, 1)
+    projects[currentProjectIndex].todos.splice(taskIndex, 1)
     saveData(projects)
 }
 
 export function deleteProject(projectIndex){
     projects.splice(projectIndex, 1)
 
-    if (projects.length > 0){
-        currentProject = projects[0]
-    } else{
-        currentProject = null
-    }
-
+    currentProjectIndex = 0
     saveData(projects)
 }
 
 export function toggleTaskStatus(taskIndex){
-    const toggleTask = currentProject.todos[taskIndex]
+    const toggleTask = projects[currentProjectIndex].todos[taskIndex]
     toggleTask.isComplete = !toggleTask.isComplete
     saveData(projects)
 }
 
 export function editTask(taskIndex, newTitle, newDescription, newDate, newPriority, newNotes){
-    const editTodo = currentProject.todos[taskIndex]
+    const editTodo = currentProjectIndex.todos[taskIndex]
     editTodo.title = newTitle
     editTodo.description = newDescription
     editTodo.date = newDate
@@ -82,5 +80,5 @@ export function editTask(taskIndex, newTitle, newDescription, newDate, newPriori
 }
 
 export function getCurrentProjectName() {
-    return currentProject.name;
+    return currentProjectIndex.name;
 }

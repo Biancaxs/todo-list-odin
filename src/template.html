@@ -15,10 +15,10 @@
             <form method="dialog">
                 <h2>New Project</h2>
                 
-                <input type="text" id="projectName" name="projectName" placeholder="Project name *" required>
+                <input type="text" id="projectName" name="projectName" placeholder="Project name *">
 
                 <div>
-                    <button value="cancel">Cancel</button>
+                    <button type="button" formmethod="dialog" id="cancelProjectBtn">Cancel</button>
                     <button id="createProjectBtn" value="create">Create</button>
                 </div>
             </form>
@@ -60,10 +60,27 @@
 
 
                 <div>
-                    <button value="cancel">Cancel</button>
+                    <button type="button" formmethod="dialog" id="cancelTaskBtn">Cancel</button>
                     <button id="createTaskBtn" value="create">Create task</button>
                 </div>
             </form>
+        </dialog>
+
+
+        <dialog id="taskDetailsDialog">
+            <div class="modal-content">
+                <h2 id="modalTaskTitle">Task Title</h2>
+                <p><strong>Description:</strong> <span id="modalTaskDesc"></span></p>
+                <p><strong>Due Date:</strong> <span id="modalTaskDate"></span></p>
+                <p><strong>Priority:</strong> <span id="modalTaskPriority"></span></p>
+                <p><strong>Notes:</strong> <span id="modalTaskNotes"></span></p>
+                
+                <div class="modal-actions">
+                    <button id="modalEditBtn">Edit</button>
+                    <button id="modalDeleteBtn">Delete</button>
+                    <button id="modalCloseBtn">Close</button>
+                </div>
+            </div>
         </dialog>
 
     </main>

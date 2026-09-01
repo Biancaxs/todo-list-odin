@@ -1,5 +1,5 @@
 import './appLogic.js'
-import { getProjects, newProjects, addTask, getCurrentTodos, deleteTask, deleteProject, toggleTaskStatus, editTask, getCurrentProjectName } from './appLogic.js'
+import { getProjects, newProjects, addTask, getCurrentTodos, deleteTask, deleteProject, toggleTaskStatus, editTask, getCurrentProjectName, selectProject } from './appLogic.js'
 
 const openTaskDialog = document.getElementById("openTaskDialog")
 const openProjectDialog = document.getElementById("openProjectDialog")
@@ -19,6 +19,18 @@ const taskDueDate = document.getElementById("taskDueDate")
 const taskPriority = document.getElementById("taskPriority")
 const taskProject = document.getElementById("taskProject")
 const taskNotes = document.getElementById("taskNotes")
+
+const taskDetailsDialog = document.getElementById("taskDetailsDialog")
+
+const modalTaskTitle = document.getElementById("modalTaskTitle")
+const modalTaskDesc = document.getElementById("modalTaskDesc")
+const modalTaskDate = document.getElementById("modalTaskDate")
+const modalTaskPriority = document.getElementById("modalTaskPriority")
+const modalTaskNotes = document.getElementById("modalTaskNotes")
+
+const modalEditBtn = document.getElementById("modalEditBtn")
+const modalDeleteBtn = document.getElementById("modalDeleteBtn")
+const modalCloseBtn = document.getElementById("modalCloseBtn")
 
 const projectName = document.getElementById("projectName")
 
@@ -70,12 +82,17 @@ createTaskBtn.addEventListener("click", () => {
 
 createProjectBtn.addEventListener("click", () => {
     const newProjectName = projectName.value
+    if(newProjectName.trim() === "") return
     newProjects(newProjectName)
     projectName.value = ""
     projectDialog.close()
     renderProjects()
     renderProjectOptions()
     renderTodos()
+})
+
+modalCloseBtn.addEventListener("click", () => {
+    taskDetailsDialog.close()
 })
 
 export function renderProjects(){
@@ -85,6 +102,11 @@ export function renderProjects(){
         const newProjectLi = document.createElement("li")
         newProjectLi.className = "projects-li"
         newProjectLi.textContent = project.name
+
+        newProjectLi.addEventListener("click", () => {
+            selectProject(index)
+            renderTodos()
+        })
 
         if (project.name !== "Standard"){
             const deleteProjectBtn = document.createElement("button")
@@ -96,6 +118,8 @@ export function renderProjects(){
                 const projectIndex = e.target.dataset.index
                 
                 deleteProject(projectIndex)
+                selectProject(0) 
+                
                 renderTodos()
                 renderProjects()
                 renderProjectOptions()
@@ -110,29 +134,14 @@ export function renderProjects(){
 export function renderTodos(){
     const todoList = document.getElementById("todo")
     todoList.innerHTML = ""
+    
     getCurrentTodos().forEach((todo, index) => {
         const newTodo = document.createElement("li")
         newTodo.className = "todo-li"
-        const taskText = document.createElement("span")
-        taskText.textContent = todo.title
-        newTodo.appendChild(taskText)
-
-        const deleteTaskBtn = document.createElement("button")
-        deleteTaskBtn.className = "delete-task-btn"
-        deleteTaskBtn.textContent = "Delete"
-        deleteTaskBtn.dataset.index = index
-
-        deleteTaskBtn.addEventListener("click", (e) => {
-            const taskIndex = e.target.dataset.index
-            
-            deleteTask(taskIndex)
-            renderTodos()
-        })
-
+        
         const toggleBtn = document.createElement("input")
         toggleBtn.type = "checkbox"
-        toggleBtn.classList = "todo-checkbox"
-
+        toggleBtn.className = "todo-checkbox"
         toggleBtn.checked = todo.isComplete
 
         if (todo.isComplete) {
@@ -144,30 +153,54 @@ export function renderTodos(){
             renderTodos()
         })
 
-        const editTaskBtn = document.createElement("button")
-        editTaskBtn.className = "edit-task-btn"
-        editTaskBtn.textContent = "Edit"
+        const taskText = document.createElement("span")
+        taskText.textContent = todo.title
+        
+        newTodo.addEventListener("click", (e) => {
+            if (e.target.type === "checkbox") return;
 
-        editTaskBtn.addEventListener("click", () => {
-            currentlyEditingIndex = index
-            
-            taskTitle.value = todo.title
-            taskDescription.value = todo.description
-            taskDueDate.value = todo.dueDate
-            taskPriority.value = todo.priority
-            taskProject.value = getCurrentProjectName()
-            taskNotes.value = todo.notes
+            modalTaskTitle.textContent = todo.title
+            modalTaskDesc.textContent = todo.description
+            modalTaskDate.textContent = todo.dueDate
+            modalTaskPriority.textContent = todo.priority
+            modalTaskNotes.textContent = todo.notes
 
-            taskDialog.showModal()
-            renderTodos()
+            modalDeleteBtn.dataset.index = index
+            modalEditBtn.dataset.index = index
+
+            taskDetailsDialog.showModal()
         })
 
         newTodo.appendChild(toggleBtn)
-        newTodo.appendChild(editTaskBtn)
-        newTodo.appendChild(deleteTaskBtn)
+        newTodo.appendChild(taskText)
         todoList.appendChild(newTodo)
     })
 }
+
+modalDeleteBtn.addEventListener("click", (e) => {
+    const taskIndex = e.target.dataset.index
+    deleteTask(taskIndex)
+    taskDetailsDialog.close() 
+    renderTodos()
+})
+
+modalEditBtn.addEventListener("click", (e) => {
+    const taskIndex = e.target.dataset.index
+    currentlyEditingIndex = taskIndex
+    
+    const currentTodos = getCurrentTodos()
+    const todo = currentTodos[taskIndex]
+
+    taskTitle.value = todo.title
+    taskDescription.value = todo.description
+    taskDueDate.value = todo.dueDate
+    taskPriority.value = todo.priority
+    taskProject.value = getCurrentProjectName()
+    taskNotes.value = todo.notes
+
+    taskDetailsDialog.close()
+    taskDialog.showModal()
+})
 
 export function renderProjectOptions(){
     const projectOptions = document.getElementById("taskProject")
