@@ -1,5 +1,5 @@
 import './appLogic.js'
-import { getProjects, newProjects, addTask, getCurrentTodos, deleteTask, deleteProject, toggleTaskStatus, editTask, getCurrentProjectName, selectProject } from './appLogic.js'
+import { getProjects, newProjects, addTask, getCurrentTodos, deleteTask, deleteProject, toggleTaskStatus, editTask, getCurrentProjectName, selectProject, getCurrentProjectIndex } from './appLogic.js'
 
 const openTaskDialog = document.getElementById("openTaskDialog")
 const openProjectDialog = document.getElementById("openProjectDialog")
@@ -98,14 +98,22 @@ modalCloseBtn.addEventListener("click", () => {
 export function renderProjects(){
     const projectList = document.getElementById("projects")
     projectList.innerHTML = ""
+
+    const activeProjectIndex = getCurrentProjectIndex()
+
     getProjects().forEach((project, index) => {
         const newProjectLi = document.createElement("li")
         newProjectLi.className = "projects-li"
         newProjectLi.textContent = project.name
+        
+        if (index === activeProjectIndex) {
+            newProjectLi.classList.add("active")
+        }
 
         newProjectLi.addEventListener("click", () => {
             selectProject(index)
             renderTodos()
+            renderProjects()
         })
 
         if (project.name !== "Standard"){

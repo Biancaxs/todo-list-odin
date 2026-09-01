@@ -70,8 +70,7 @@ export function toggleTaskStatus(taskIndex){
 }
 
 export function editTask(taskIndex, newTitle, newDescription, newDate, newPriority, newNotes){
-    const editTodo = currentProjectIndex.todos[taskIndex]
-    editTodo.title = newTitle
+    const editTodo = projects[currentProjectIndex].todos[taskIndex]
     editTodo.description = newDescription
     editTodo.date = newDate
     editTodo.priority = newPriority
@@ -80,5 +79,12 @@ export function editTask(taskIndex, newTitle, newDescription, newDate, newPriori
 }
 
 export function getCurrentProjectName() {
-    return currentProjectIndex.name;
+    if (!projects[currentProjectIndex]) {
+        return "";
+    }
+    return projects[currentProjectIndex].name;
+}
+
+export function getCurrentProjectIndex() {
+    return currentProjectIndex;
 }

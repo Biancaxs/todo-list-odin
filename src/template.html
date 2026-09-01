@@ -9,29 +9,39 @@
     
     <aside>
 
-        <ul id="projects"></ul>
-        <button id="openProjectDialog">New project</button>
-        <dialog id="projectDialog">
-            <form method="dialog">
-                <h2>New Project</h2>
-                
-                <input type="text" id="projectName" name="projectName" placeholder="Project name *">
+        <div class="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>view-list</title><path d="M9,5V9H21V5M9,19H21V15H9M9,14H21V10H9M4,9H8V5H4M4,19H8V15H4M4,14H8V10H4V14Z" /></svg>
+            <h2>todo-list odin</h2>
+        </div>
+        <div class="projects-aside">
+            <p>PROJECTS</p>
+            <ul id="projects"></ul>
+            <button id="openProjectDialog">New project</button>
+            <dialog id="projectDialog">
+                <form method="dialog">
+                    <h2>New Project</h2>
+                    
+                    <input type="text" id="projectName" name="projectName" placeholder="Project name *">
 
-                <div>
-                    <button type="button" formmethod="dialog" id="cancelProjectBtn">Cancel</button>
-                    <button id="createProjectBtn" value="create">Create</button>
-                </div>
-            </form>
-        </dialog>
+                    <div>
+                        <button type="button" formmethod="dialog" id="cancelProjectBtn">Cancel</button>
+                        <button id="createProjectBtn" value="create">Create</button>
+                    </div>
+                </form>
+            </dialog>
+        </div>
 
     </aside>
 
     <main>
 
-        <h2></h2>
+        <div class="all-tasks">
+            <h2>All Tasks</h2>
+            <button id="openTaskDialog">Add task</button>
+        </div>
+        
         <ul id="todo"></ul>
 
-        <button id="openTaskDialog">Add task</button>
         <dialog id="taskDialog">
             <form method="dialog">
                 <h2>New Task</h2>
