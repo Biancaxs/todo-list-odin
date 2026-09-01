@@ -10,7 +10,7 @@ export function initializeApp(){
     if(projects.length === 0){
         let standardProject = project("Standard")
         projects.push(standardProject)
-        currentProject = standardProject
+        currentProjectIndex = 0 
     } else{
         projects = projects.map(p => {
             const realProject = project(p.name)
