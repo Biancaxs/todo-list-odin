@@ -9,16 +9,19 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body{
-    background-color: #f7f3e3 ;
+    background-color: #fff ;
     color: #1a1715;
 
     height: 100vh;
-    width: 100%;
+    width: 100vw;
 
     display: flex;
+    align-items: flex-start;
+    overflow: hidden;
 }
 
 aside{
@@ -27,6 +30,10 @@ aside{
 
     padding: 20px;
     width: 300px;
+    top: 0;
+    height: 100vh;
+    box-sizing: border-box;
+    overflow-y: auto
 }
 
 .logo{
@@ -57,13 +64,16 @@ aside{
     display: flex;
     flex-direction: column;
     gap: 15px;
+    list-style-type: none;
 }
 
 .projects-li{
+    display: flex;
     padding: 10px;
     border-radius: 3px;
     cursor: pointer;
-    transition: filter 0.2s;
+    align-content: center;
+    justify-content: space-between;
 }
 
 .projects-li:hover{
@@ -75,6 +85,25 @@ aside{
     background-color: #2c2724;
 }
 
+.delete-project-btn{
+    width: 20px;
+    background-color: transparent;
+    border: none;
+    fill: #fff;
+}
+
+#openProjectDialog{
+    background-color: #7b2cbf;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#openProjectDialog:hover{
+    background-color: #9739e9; 
+}
 
 
 
@@ -82,10 +111,16 @@ aside{
 main{
     width: 100%;
     height: 100vh;
+    overflow-y: auto;
+    box-sizing: border-box;
 }
 
 #todo{
-    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    list-style-type: none;
+    cursor: pointer;
 }
 
 .all-tasks{
@@ -95,4 +130,184 @@ main{
     justify-content: space-between;
     background-color: #fff;
     padding: 20px;
+}
+
+#openTaskDialog{
+    background-color: #7b2cbf;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#openTaskDialog:hover{
+    background-color: #9739e9; 
+}
+
+.todo-li{
+    display: flex;
+    background-color: #f7f3e3;
+    padding: 20px;
+    gap: 10px;
+}
+
+.todo-li.completed {
+    text-decoration: line-through;
+    color: #b3b6b7;
+}
+
+input.todo-checkbox {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border: 2px solid #b3b6b7;
+  border-radius: 50px;
+  background-color: #f7f3e3;
+  display: inline-grid;
+  place-content: center;
+  transition: all 0.2s ease-in-out;
+}
+
+input.todo-checkbox:checked {
+  background-color: #7b2cbf;
+  border-color: #7b2cbf;
+}
+
+input.todo-checkbox:focus-visible {
+  outline: 2px solid #7b2cbf;
+  outline-offset: 2px;
+}
+
+
+
+
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+}
+
+dialog {
+    margin: auto;
+    border: 1px solid #2c2724;
+    border-radius: 8px;
+    padding: 24px;
+    background-color: #1a1715;
+    color: #f7f3e3;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+dialog form,
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+dialog h2 {
+    font-size: 1.25rem;
+    color: #f7f3e3;
+    margin-bottom: 4px;
+}
+
+dialog label {
+    font-size: 0.85rem;
+    color: #b3b6b7;
+    margin-bottom: -10px;
+}
+
+dialog input[type="text"],
+dialog input[type="date"],
+dialog select {
+    width: 100%;
+    padding: 10px 12px;
+    background-color: #2c2724;
+    border: 1px solid #3d3734;
+    border-radius: 4px;
+    color: #f7f3e3;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+dialog input[type="text"]:focus,
+dialog input[type="date"]:focus,
+dialog select:focus {
+    border-color: #7b2cbf;
+}
+
+dialog input::placeholder {
+    color: #8c8f90;
+}
+
+dialog input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
+
+dialog form > div:last-child,
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+dialog button {
+    padding: 10px 16px;
+    border-radius: 4px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#createProjectBtn,
+#createTaskBtn,
+#modalEditBtn {
+    background-color: #7b2cbf;
+    color: #fff;
+}
+
+#createProjectBtn:hover,
+#createTaskBtn:hover,
+#modalEditBtn:hover {
+    background-color: #9739e9;
+}
+
+#cancelProjectBtn,
+#cancelTaskBtn,
+#modalCloseBtn {
+    background-color: transparent;
+    color: #b3b6b7;
+    border: 1px solid #3d3734;
+}
+
+#cancelProjectBtn:hover,
+#cancelTaskBtn:hover,
+#modalCloseBtn:hover {
+    background-color: #2c2724;
+    color: #f7f3e3;
+}
+
+#modalDeleteBtn {
+    background-color: #e63946;
+    color: #fff;
+}
+
+#modalDeleteBtn:hover {
+    background-color: #c1121f;
+}
+
+#taskDetailsDialog p {
+    font-size: 0.95rem;
+    color: #b3b6b7;
+    line-height: 1.4;
+}
+
+#taskDetailsDialog p strong {
+    color: #f7f3e3;
 }
